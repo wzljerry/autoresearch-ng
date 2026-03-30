@@ -51,7 +51,8 @@ others → add to Pareto front, do not replace current best.
 - Everything is fair game: architecture, hyperparameters, optimizer, training loop
 
 ## Read-only assets (DO NOT MODIFY)
-- `prepare.py` — data loading, tokenizer, evaluation, constraint checker
+- `prepare.py` — data loading, tokenizer, evaluation
+- `train_baseline.py` — reference baseline (for regression comparison)
 - `program.md` — this file
 - `pyproject.toml` — dependencies (do not add new ones)
 

@@ -9,4 +9,10 @@ annealing schedule, experience memory rules, safety gates, and meta-optimization
 Import with `from prepare_ng import *`. These are optional helpers — you can
 implement the same logic inline if you prefer.
 
+`prepare.py` provides the data pipeline: `Tokenizer`, `make_dataloader()`,
+`evaluate_bpb()`. Do NOT modify this file.
+
+`train_baseline.py` is the reference baseline. Do NOT modify it.
+`train.py` is your working copy — this is the ONLY file you edit.
+
 Start by reading `program.md` completely, then begin the experiment loop.

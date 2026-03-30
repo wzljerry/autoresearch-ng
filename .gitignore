@@ -8,7 +8,9 @@ build/
 *.egg
 
 # AutoResearch-NG runtime artifacts (generated during runs)
+train.py
 experience.jsonl
+progress.png
 pareto_front.json
 baseline_metrics.json
 baseline_output.log

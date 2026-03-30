@@ -220,46 +220,41 @@ Phase 3: Add model capacity (MLP width, Value Embeddings)         → final push
 ## Quick Start
 
 ```bash
-# 1. Clone autoresearch and the NG overlay
-git clone https://github.com/karpathy/autoresearch
+# 1. Clone and enter the repo
 git clone https://github.com/wzljerry/autoresearch-ng
+cd autoresearch-ng
 
-# 2. Copy NG files into autoresearch
-cd autoresearch
-cp ../autoresearch-ng/program.md .
-cp ../autoresearch-ng/prepare_ng.py .
-cp ../autoresearch-ng/CLAUDE.md .
+# 2. One-time setup (downloads data, runs baseline)
+bash setup.sh
 
-# 3. One-time setup (data prep + baseline)
-bash ../autoresearch-ng/setup.sh
-
-# 4. Run (same as original autoresearch)
+# 3. Run
 claude
 ```
 
-**Requirements:** Python 3.10+, a single NVIDIA GPU, [uv](https://github.com/astral-sh/uv), and [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+**Requirements:** Python 3.10+, a single NVIDIA GPU (H100 recommended), [uv](https://github.com/astral-sh/uv), and [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
-Usage is identical to the original autoresearch — run `claude` in the directory and walk away. The NG improvements are communicated to the agent through `CLAUDE.md` → `program.md`.
+`setup.sh` copies `train_baseline.py` to `train.py`, downloads the dataset, runs the baseline, and saves initial metrics. After that, just run `claude` and walk away — the agent reads `CLAUDE.md` → `program.md` and starts the autonomous experiment loop.
 
-## Files Added (3 files, ~43KB total)
+### Monitoring while running
 
-```
-program.md      Agent instructions: annealing schedule, multi-objective definitions,
-                memory rules, safety gates, meta-optimization triggers.
-prepare_ng.py   Utility library: multi-metric collection, constraint checking,
-                annealing decisions, Pareto front, experience logging.
-setup.sh        One-click setup: data prep → baseline → git init → launch.
+Open a separate terminal in the same directory:
+
+```bash
+uv run monitor.py            # text status summary
+uv run monitor.py --plot     # also generates progress.png
 ```
 
 ### Files Generated at Runtime
 
 ```
+train.py               Working copy of the training script (the ONLY file the agent edits)
 experience.jsonl       Structured log of every experiment (hypothesis, result, insight)
 pareto_front.json      Non-dominated solutions across multiple objectives
 baseline_metrics.json  Snapshot of initial metrics for regression detection
 results.tsv            Extended experiment log (original format + new columns)
 stage_summaries/       Markdown summaries generated every 15 experiments
 meta_strategy.md       New search strategy (auto-generated when stagnation detected)
+progress.png           Visualization of val_bpb trajectory (from monitor.py --plot)
 ```
 
 ## Adapting to Other Tasks
@@ -276,20 +271,31 @@ Everything else (annealing, memory, Pareto, meta-optimization, safety gates) wor
 
 ```
 autoresearch-ng/
-├── README.md           This file
-├── CLAUDE.md           Auto-read by Claude Code on launch
-├── LICENSE             MIT
-├── CONTRIBUTING.md     How to contribute
-├── program.md          Agent instructions (replaces original)
-├── prepare_ng.py       NG utility library (supplements original)
-├── setup.sh            One-time data prep and baseline
-├── generate_figures.py Script to regenerate figures from experiment data
-└── figures/            Experiment result visualizations
-    ├── fig1_trajectory.png   val_bpb optimization trajectory
-    ├── fig2_categories.png   Improvement sources by category
-    ├── fig3_phases.png       Three-phase strategy performance
-    ├── fig4_comparison.png   Feature comparison: Original vs NG
-    └── fig5_waterfall.png    Top improvements waterfall chart
+├── README.md            This file
+├── CLAUDE.md            Auto-read by Claude Code on launch
+├── LICENSE              MIT
+├── CONTRIBUTING.md      How to contribute
+│
+│  # Core training (from karpathy/autoresearch)
+├── prepare.py           Data loading, tokenizer, evaluation (READ-ONLY)
+├── train_baseline.py    Reference baseline training script (READ-ONLY)
+├── pyproject.toml       Python dependencies
+├── uv.lock              Dependency lock file
+│
+│  # NG enhancements
+├── program.md           Agent instructions: annealing, objectives, memory, safety
+├── prepare_ng.py        NG utility library: metrics, constraints, annealing, Pareto
+├── monitor.py           Real-time experiment monitoring dashboard
+├── setup.sh             One-time setup script
+│
+│  # Documentation
+├── generate_figures.py  Script to regenerate figures from experiment data
+└── figures/             Experiment result visualizations
+    ├── fig1_trajectory.png
+    ├── fig2_categories.png
+    ├── fig3_phases.png
+    ├── fig4_comparison.png
+    └── fig5_waterfall.png
 ```
 
 ## Related Work
