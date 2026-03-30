@@ -1,7 +1,7 @@
 # AutoResearch-NG Program for nanochat Training
 
-> 基于 karpathy/autoresearch 仓库的改进版 program.md
-> 将 AutoResearch-NG 框架应用于 nanochat 单 GPU LLM 训练优化
+> Enhanced program.md based on the karpathy/autoresearch repository.
+> Applies the AutoResearch-NG framework to nanochat single-GPU LLM training optimization.
 
 ## Identity
 
@@ -199,7 +199,7 @@ Read ALL previous stage summaries before starting a new stage.
    - Run baseline, record metrics
    - Restore current best train.py
    - Compare: if current best val_bpb is within 0.5% of baseline, 
-     log WARNING "搜索可能停滞 — 考虑更激进的探索方向"
+     log WARNING "Search may be stagnating — consider more aggressive exploration directions"
 2. **Complexity audit**:
    - If cyclomatic complexity grew > 30% from baseline, log WARNING
    - If code_lines grew > 50% from baseline, log WARNING

@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup.sh — 一次性准备，之后直接 claude 启动
+# setup.sh — One-time setup, then launch with 'claude'
 set -e
 
 echo "AutoResearch-NG setup"
